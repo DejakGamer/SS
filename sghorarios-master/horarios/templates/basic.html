@@ -1,0 +1,80 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+
+<!--Template base de todo el proyecto, se incluyen todos los apartados necesarios para el esqueleto de
+cualquier template de cada modulo o en general, tiene el proposito de precargar todo los elementos que
+se usaran para la construccion de este proyecto en el apartado del front-end.
+*******USO: en la otra template en la primera linea del mismo archivo incluir #
+-->
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" type="image/png" href="https://www.uaemex.mx/images/logos/uniaemex.png"/>
+        <!--Bloque para insertar los titulos de la pagina en cada template personalizada-->
+        <title>
+            {%block titulosp%}
+
+            {%endblock titulosp%}
+        </title>
+        <!--Bloque del head del HTLM principal
+        Su funcion en incluir los stylos y scripts necesarios para cada template personalizada,
+        en la parte del head del HTML principal
+        -->
+        {% block head %}
+        
+        {% endblock head%}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        <link href="{% static 'css/homest.css' %}" rel="stylesheet">
+
+        <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+        <script src="{% static 'js/js.cookie.min.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <!--Template de barra de navegación superior del proyecto, se incluye en la parte superior
+            de cada una de las templates personalizadas de cada modulo
+        -->
+        {% include 'nabvar.html' %}
+        <div id="messages" class="position-absolute w-100 d-flex flex-column p-4">
+            {% for message in messages %}
+            <div class="toast ml-auto" role="alert" data-delay="700" data-autohide="false" style="z-index: 100;">
+                <div class="toast-header">
+                    <!--El titulo del mensaje se recibe en la poscicion 0-->
+                    <!--El color del titulo del mensaje se recibe como clase del color de 
+                        bootstrap, para mas info https://getbootstrap.com/docs/4.0/utilities/colors/ -->
+                    <strong class="mr-auto {% if message.level_tag == 'error' %}text-danger {% elif message.level_tag == 'success' %}text-success {% elif message.level_tag == 'warning' %} text-warning {% else %} text-info {% endif %}">{{message.extra_tags}}</strong>
+                </div>
+                <!--El mensaje se recibe en la poscicion 1-->
+                <div class="toast-body"> {{message}} </div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+        <!--Bloque del contenido por debajo de la barra de navegación, en este apartado se incluye todo
+        lo que se quiera incluir en el body del HTML-->
+        {% block contenido %}
+        
+        {% endblock contenido%}
+
+        <!--Bloque de script, se incluye en este apartado todos los scripts que requieran ir en el apartado
+        del body, es la ultima seccion del doby, por lo, aquello que se deba de incluir en la parte inferior
+        del body, debera ir en este apartado-->
+
+        <script>
+            $(document).ready(function(){
+                $('.toast').toast('show');      
+            });
+        </script>
+        {% block script %}
+        
+        {% endblock script%}
+    </body>
+
+</html>

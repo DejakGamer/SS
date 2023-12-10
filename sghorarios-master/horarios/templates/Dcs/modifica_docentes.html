@@ -1,0 +1,150 @@
+{% extends 'basic.html' %}
+{% load static %}
+
+{% block titulosp %}Moficación de Docente{% endblock titulosp %}
+
+{% block head %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock head %}
+
+{% block contenido %}
+<br>
+<div class="container-fluid">
+
+    <div class="row justify-content-center align-content-center">
+        <div class="card text-center w-50" style="padding: 0px">
+        <form id="formulario" action="{% url 'guardar_modificacion_docente' %}" method='POST' class="needs-validation" novalidate>
+        {% csrf_token %}
+
+            <input type="hidden" value="{{docente.user.username}}" name="user_origin">
+            <div class="card-header banner">
+                Modificación de Docente
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="input-group mb-1">
+                        <span class="input-group-text material-icons">account_box</span>
+                        <input id="input_nombre" type="text" class="form-control" id="" placeholder="Nombre(s)" name="nombre" pattern="[A-Za-zÀ-ÿ\s&]{3,30}" value="{{docente.user.first_name}}" required>
+                        <div class="invalid-feedback">
+                            Ingrese su Nombre(s)
+                        </div>
+                    </div>
+                    <div class="input-group mb-1">
+                        <span class="input-group-text material-icons">hdr_auto</span>
+                        <input id="input_app" type="text" class="form-control" id="" placeholder="Apellido(s)" name="app" pattern="[A-Za-zÀ-ÿ\s&]{3,30}" value="{{docente.user.last_name}}" required>
+                        <div class="invalid-feedback">
+                            Ingrese su Apellido(s)
+                        </div>
+                    </div>
+                    <div class="input-group mb-1">
+                        <span class="input-group-text material-icons">account_balance</span>
+                        <input id="input_grado" type="text" class="form-control" id="" placeholder="Nombre del último grado de estudios" name="grdEst" pattern="[A-Za-zÀ-ÿ\s&./()]{2,70}" value="{{docente.nombre_grado}}" required>
+                        <div class="invalid-feedback">
+                            Ingrese su grado de estudios
+                        </div>
+                    </div>
+                    <div class="input-group mb-1">
+                        <span class="input-group-text material-icons">email</span>
+                        <input type="text" class="form-control" id="" placeholder="Correo Institucional" name="username" pattern="[^@ \t\r\n]{2,}@[^@ \t\r\n]{2,}\.[^@ \t\r\n]{2,}" value="{{docente.user.username}}" required>
+                        <div class="invalid-feedback">
+                            Ingrese su correo institucional
+                        </div>
+                    </div>
+                    <div class="input-group mb-1">
+                        <span class="input-group-text material-icons">password</span>
+                        <input type="password" class="form-control" id="password" placeholder="Contraseña Nueva" name="pass" pattern="[A-Za-z0-9]{6,20}" >
+                        <div class="invalid-feedback">
+                            Unicamente caracteres alfanumericos, minimo 6 caracteres, maximo 20 caracteres
+                        </div>
+                    </div>
+                    <div class="input-group mb-1">
+                        <span class="input-group-text material-icons">password</span>
+                        <input type="password" class="form-control" id="confirm_password" placeholder="Confirmar Contraseña"  pattern="[A-Za-z0-9]{6,20}" onkeyup="check_password(this)">
+                        <div class="invalid-feedback">
+                            No coinciden las contraseñas
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row g-3">
+                    <div class="mb-1">
+                        <select class="form-select" aria-label="Grado Academico" name="grdAca" required>
+                            <option {% if not docente.grado_academico %}selected{% endif %} disabled value="">Grado Academico</option>
+                            <option {% if docente.grado_academico == "Licenciatura" %}selected{% endif %} value="Licenciatura">Licenciatura</option>
+                            <option {% if docente.grado_academico == "Maestria" %}selected{% endif %} value="Maestria">Maestria</option>
+                            <option {% if docente.grado_academico == "Doctorado" %}selected{% endif %} value="Doctorado">Doctorado</option>
+                            <option {% if docente.grado_academico == "Tecnico" %}selected{% endif %}value="Tecnico">Tecnico</option>
+                            <option {% if docente.grado_academico == "Tecnico Superior" %}selected{% endif %}value="Tecnico Superior">Tecnico Superior</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Seleccione su grado academico
+                        </div>
+                    </div>
+                    <div class="mb-1">
+                        <select class="form-select" aria-label="Tipo de Docente" name="tipDocente" required>
+                            <option disabled value="">Tipo de Docente</option>
+                            <option {% if docente.tipo_de_docente == 1%}selected{% endif %} value="1">Tiempo Completo</option>
+                            <option {% if docente.tipo_de_docente == 2%}selected{% endif %} value="2">Horas Clase</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Seleccione su tipo de docente
+                        </div>
+                    </div>
+                    {% for grupo in user.groups.all %}
+                    {% if grupo.name == "Academico" %}
+                    <div class="mb-1">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="Si" id="flexCheckDefault" name="cordi" {% if cordi %}checked{% endif %}>
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Coordinador
+                            </label>
+                        </div>
+                    </div>
+                    {% elif grupo.name == "Coordinador"  %}
+                        <input  type="hidden" value="Si" name="cordi">
+                    {% endif%}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer text-muted">
+                <button type="submit" class="btn grenncolor text-white">Guardar Modificaciones</button>
+            </div>
+        
+        </form>
+        </div>
+    </div>
+
+</div>
+{% endblock contenido %}
+
+{% block script %}
+<script src="{% static 'js/UA/validaciones.js' %}" ></script>
+<script>
+    /**
+    /*Script que hace la validacion de confirmar contraseña 
+    */
+    var input_password = $("#password")
+    var input_password_confirm = $("#confirm_password")
+    input_password.keyup(function () {
+        if (this.value.length > 0) {
+            input_password_confirm.attr("required", true);
+        }else{
+            input_password_confirm.removeAttr("required");
+            input_password_confirm.toggleClass("is-invalid", false);
+        }
+    });
+    input_password_confirm.keyup(function () {
+        $(this).toggleClass("is-invalid", input_password.val() != $(this).val());
+    });
+    $('#formulario').submit(function() {
+        var input_password = $("#password")
+        var input_password_confirm = $("#confirm_password");
+        var c = input_password.val().length > 0 && input_password.val() != input_password_confirm.val();
+    
+        input_password_confirm.attr("required", c);
+        input_password_confirm.toggleClass("is-invalid", c);
+        return !c;
+    });
+
+</script>
+{% endblock script%}

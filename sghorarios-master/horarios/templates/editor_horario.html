@@ -1,0 +1,311 @@
+{% extends 'basic.html' %}
+{% load static %}
+
+{% block titulosp %}{{values.siglas}}{% endblock titulosp %}
+
+{% block head %}
+     <link href="{% static 'css/Dcs/registrodocentes.css' %}" rel="stylesheet">
+     <style>
+         .docente-td{
+            box-shadow: 0 0 1px #ccc;
+            -webkit-transition-duration: 0.5s;
+            -webkit-transition-timing-function: linear;
+            transition-duration: 0.5s;
+            transition-timing-function: linear;
+            box-shadow:0px 0 0 #ccc  inset;
+        }
+        .docente-td:hover{
+            box-shadow:500px 0 0 #ccc inset;
+        }
+        .docente_seleccionado{
+            background-color: rgb(100, 100, 100) !important;
+            color: white;
+        }
+        .ua_docente{
+            font-size: 10px;
+        }
+     </style>
+{% endblock head %}
+
+{% block contenido %}
+<br>
+<div class="container-fluid">
+<!-- Content here -->
+    <div class="row justify-content-center align-content-center">
+        <div class="col-md-4">
+        
+        <form action="{% url 'guardar_registro_docente' %}" method='POST' class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <div class="card justify-content-center text-center">
+            <div class="card-header banner">
+                Docentes
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="mb-1">
+                        <input id="input_nombre" type="text" class="form-control" placeholder="Nombre(s)" onkeyup="getDocentes(this.value)" pattern="[A-Za-zÀ-ÿ\s&]{3,30}">
+                    </div>
+                </div>
+                <div style="overflow: auto; height: 300px;">
+                    <table class="table table-hover">
+                        <tbody id="tabla_d" ></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card justify-content-center text-center">
+            <div class="card-header banner">
+                Unidades de aprendizaje
+            </div>
+            <div class="card-body">
+                <div style="overflow: auto; height: 300px;">
+                    <table id="tabla_ua" class="table table-hover">
+                            {% for unidad in materias %}
+                            <tr class="ua_id" ua_id="{{unidad.id}}">
+                                <td>
+                                    <input 
+                                        id="radio_ua_{{unidad.id}}" 
+                                        type="radio" 
+                                        name="ua" 
+                                        value="{{unidad.id}}" 
+                                        onclick="select_ua(this)"
+                                        {% if forloop.counter0 == 0 %} checked {% endif %}>
+                                    </td>
+                                <td>
+                                    <label for="radio_ua_{{unidad.id}}">{{unidad.titulo}}</label></br>
+                                    <span class="ua_docente" id="">Vacio</span>
+                                    <script class="horario" type="application/json"></script>
+                                </td>
+                                <td style="white-space: nowrap;"><span class="min">{{0}}</span> de <span class="max">{{unidad.horas}}</span></td>
+                                <td><input class="ua_color" type="color" value="#ff0000" onchange="cambia_color_ua('{{unidad.id}}', this.value, $('#horarios_tabla'))"></td>
+                            </tr>
+                            {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" id="horarioDisp" name="horariosd" value="">
+
+        </form>
+
+        </div>
+        <div class="col-md-8">
+            <div class="card text-center">
+                <div class="card-header banner">
+                    <h5 style="float: left;">Horario de {{values.siglas}} de {{values.licenciatura.nombre}}, semestre {{values.semestre}}</h5>
+                    <a onclick="enviar_horarios(recogerDatos())" class="btn text-white btn-sm" role="button" aria-pressed="true" style="float: right;"><h6>Guardar</h6></a>
+                    <button type="button" id="print" class="btn text-white btn-sm "  style="float: right;"><h6>Imprimir</h6></button>
+                    
+                </div>
+                <div class="card-body" id="tableprint">
+                    <table class="table table-bordered text-center" id="horarios_tabla">
+                        <thead>
+                            <tr>
+                                <th scope="col">Hora/Día</th>
+                                <th scope="col">Lunes</th>
+                                <th scope="col">Martes</th>
+                                <th scope="col">Miercoles</th>
+                                <th scope="col">Jueves</th>
+                                <th scope="col">Viernes</th>
+                                <th scope="col">Sabado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">7:00 - 7:30</th>
+                                <td coord-X="0" coord-Y="0" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="0" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="0" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="0" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="0" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="0" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">7:30 - 8:00</th>
+                                <td coord-X="0" coord-Y="1" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="1" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="1" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="1" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="1" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="1" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8:00 - 8:30</th>
+                                <td coord-X="0" coord-Y="2" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="2" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="2" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="2" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="2" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="2" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8:30 - 9:00</th>
+                                <td coord-X="0" coord-Y="3" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="3" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="3" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="3" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="3" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="3" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9:00 - 9:30</th>
+                                <td coord-X="0" coord-Y="4" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="4" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="4" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="4" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="4" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="4" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9:30 - 10:00</th>
+                                <td coord-X="0" coord-Y="5" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="5" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="5" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="5" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="5" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="5" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">10:00 - 10:30</th>
+                                <td coord-X="0" coord-Y="6" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="6" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="6" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="6" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="6" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="6" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">10:30 - 11:00</th>
+                                <td coord-X="0" coord-Y="7" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="7" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="7" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="7" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="7" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="7" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">11:00 - 11:30</th>
+                                <td coord-X="0" coord-Y="8" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="8" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="8" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="8" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="8" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="8" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">11:30 - 12:00</th>
+                                <td coord-X="0" coord-Y="9" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="9" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="9" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="9" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="9" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="9" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">12:00 - 12:30</th>
+                                <td coord-X="0" coord-Y="10" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="10" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="10" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="10" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="10" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="10" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">12:30 - 13:00</th>
+                                <td coord-X="0" coord-Y="11" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="11" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="11" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="11" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="11" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="11" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">13:00 - 13:30</th>
+                                <td coord-X="0" coord-Y="12" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="12" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="12" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="12" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="12" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="12" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">13:30 - 14:00</th>
+                                <td coord-X="0" coord-Y="13" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="13" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="13" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="13" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="13" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="13" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">14:00 - 14:30</th>
+                                <td coord-X="0" coord-Y="14" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="14" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="14" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="14" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="14" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="14" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">14:30 - 15:00</th>
+                                <td coord-X="0" coord-Y="15" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="15" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="15" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="15" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="15" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="15" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">15:00 - 15:30</th>
+                                <td coord-X="0" coord-Y="16" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="16" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="16" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="16" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="16" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="16" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">15:30 - 16:00</th>
+                                <td coord-X="0" coord-Y="17" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="17" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="17" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="17" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="17" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="17" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">16:00 - 16:30</th>
+                                <td coord-X="0" coord-Y="18" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="18" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="18" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="18" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="18" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="18" ua="" profesor=""></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">16:30 - 17:00</th>
+                                <td coord-X="0" coord-Y="19" ua="" profesor=""></td>
+                                <td coord-X="1" coord-Y="19" ua="" profesor=""></td>
+                                <td coord-X="2" coord-Y="19" ua="" profesor=""></td>
+                                <td coord-X="3" coord-Y="19" ua="" profesor=""></td>
+                                <td coord-X="4" coord-Y="19" ua="" profesor=""></td>
+                                <td coord-X="5" coord-Y="19" ua="" profesor=""></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock contenido %}
+
+{% block script %}
+{{values|json_script:"values" }}
+<script src="{% static 'js/jshorarios.js' %}" ></script>
+<script src="{% static 'js/printThis.js' %}" ></script>
+{% endblock script %}

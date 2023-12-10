@@ -1,0 +1,54 @@
+{% extends 'basic.html' %}
+{% load static %}
+
+        {% block titulosp %}Licenciaturas{% endblock titulosp %}
+        {% block head %}
+        <link href="{% static 'css/UA/lista.css' %}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        {% endblock head%}
+
+{% block contenido %}
+<div class="container-fluid" style="max-width: 1020px; margin-top: 40px;">
+    <div class="card">
+        <div class="card-header banner">
+            <h4 style="float: left;">Licenciaturas</h4>
+            <a style="float: right;" href="{% url 'registro_licenciatura' %}" class="btn text-white btn-md active" role="button"
+                aria-pressed="true">Agregar Licenciatura</a>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover align-middle text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">Siglas</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Versión</th>
+                        <th scope="col">Coordinador</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla_contenido">
+                    {% for l in licenciaturas %}
+                    <tr>
+                        <th>{{l.siglas}}</th>
+                        <td>{{l.nombre}}</td>
+                        <td>{{l.version}}</td>
+                        <td>{{l.coordinador.user.first_name}} {{l.coordinador.user.last_name}}</td>
+                        <td>
+                            <a href="{% url 'modificacion_licenciatura' identificador=l.id %}" class="btn greencolor text-white btn-sm" role="button" aria-disabled="true">Editar</a>
+                            <a onclick="elimnar('{{l.id}}', '{{l.nombre}}')" class="btn goldcolor text-white btn-sm" role="button" aria-disabled="true">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><th colspan="10" style="text-align: center;"> SIN DATOS </th></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}
+
+
+{% block script %}
+<script src="{% static 'js/UA/lista_licenciatura.js' %}" ></script>
+{% endblock script%}

@@ -1,0 +1,32 @@
+<header class="site-header sticky-top py-1">
+  <nav class="container d-flex flex-column flex-md-row justify-content-between">
+  
+    {% if user.is_authenticated %}
+        <a class="py-2" href="{% url 'home' %}" aria-label="Product">
+        Inicio : {{user.first_name}} {{user.last_name}} {% if user.is_staff %}Programadores{% endif %}
+        </a>
+        {% for grupo in user.groups.all %}
+
+        {% if grupo.name == "Coordinador" %}
+        <a class="py-2 d-none d-md-inline-block" href="{% url 'lista_UA' %}">Unidades de Aprendizaje</a>
+        <a class="py-2 d-none d-md-inline-block" href=" {% url 'lista_docente' %} ">Docentes</a>
+        <a class="py-2 d-none d-md-inline-block" href=" {% url 'lista_grupos' %} ">Grupos</a>
+        {% elif grupo.name == "Docente"%}
+        <a class="py-2 d-none d-md-inline-block" href="../horario_asignado/?id={{user.docente.id}}">Mi Horario</a>
+        {% elif grupo.name == "Academico"%}
+        <a class="py-2 d-none d-md-inline-block" href="{% url 'lista_UA' %}">Unidad de Aprendizaje</a>
+        <a class="py-2 d-none d-md-inline-block" href=" {% url 'lista_docente' %} ">Docentes</a>
+        <a class="py-2 d-none d-md-inline-block" href=" {% url 'lista_grupos' %} ">Grupos</a>
+        <a class="py-2 d-none d-md-inline-block" href="{% url 'lista_licenciatura' %}">Licenciaturas</a>
+        <a class="py-2 d-none d-md-inline-block" href=" {% url 'lista_coordinadores' %} ">Coordinadores</a>
+        {% endif %}
+        {% endfor %}
+        <a class="py-2 d-none d-md-inline-block" href=" {% url 'logout' %}">Cerrar Sesión</a>
+    {% else %}
+    <a class="py-2" href="{% url 'home' %}" aria-label="Product">
+    Inicio : Invitado
+    </a>
+    <a class="py-2 d-none d-md-inline-block" href=" {% url 'login' %}">Iniciar Sesión</a>
+    {% endif %}
+  </nav>
+</header>

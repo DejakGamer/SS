@@ -1,0 +1,235 @@
+{% extends 'basic.html' %}
+{% load static %}
+
+{% block titulosp %}Horario Disponible{% endblock titulosp %}
+
+{% block contenido %}
+<br>
+<div class="container-fluid">
+<!-- Content here -->
+    <form action="{% url 'guardar_modificacion_horario_docente' %}" method='POST'>
+        {% csrf_token %}
+        <div class="row justify-content-center align-content-center">
+            <div class="card text-center w-75" style="padding: 0px">
+                <div class="card-header banner">
+                    Horario Disponible: {{nombred}}
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered text-center" id="our_table">
+                        <thead>
+                            <tr class="vic">
+                                <th scope="col">Hora/Día</th>
+                                <th scope="col">Lunes</th>
+                                <th scope="col">Martes</th>
+                                <th scope="col">Miercoles</th>
+                                <th scope="col">Jueves</th>
+                                <th scope="col">Viernes</th>
+                                <th scope="col">Sabado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">7:00 - 7:30</th>
+                                <td coord-X="0" coord-Y="0">-</td>
+                                <td coord-X="1" coord-Y="0">-</td>
+                                <td coord-X="2" coord-Y="0">-</td>
+                                <td coord-X="3" coord-Y="0">-</td>
+                                <td coord-X="4" coord-Y="0">-</td>
+                                <td coord-X="5" coord-Y="0">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">7:30 - 8:00</th>
+                                <td coord-X="0" coord-Y="1">-</td>
+                                <td coord-X="1" coord-Y="1">-</td>
+                                <td coord-X="2" coord-Y="1">-</td>
+                                <td coord-X="3" coord-Y="1">-</td>
+                                <td coord-X="4" coord-Y="1">-</td>
+                                <td coord-X="5" coord-Y="1">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8:00 - 8:30</th>
+                                <td coord-X="0" coord-Y="2">-</td>
+                                <td coord-X="1" coord-Y="2">-</td>
+                                <td coord-X="2" coord-Y="2">-</td>
+                                <td coord-X="3" coord-Y="2">-</td>
+                                <td coord-X="4" coord-Y="2">-</td>
+                                <td coord-X="5" coord-Y="2">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8:30 - 9:00</th>
+                                <td coord-X="0" coord-Y="3">-</td>
+                                <td coord-X="1" coord-Y="3">-</td>
+                                <td coord-X="2" coord-Y="3">-</td>
+                                <td coord-X="3" coord-Y="3">-</td>
+                                <td coord-X="4" coord-Y="3">-</td>
+                                <td coord-X="5" coord-Y="3">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9:00 - 9:30</th>
+                                <td coord-X="0" coord-Y="4">-</td>
+                                <td coord-X="1" coord-Y="4">-</td>
+                                <td coord-X="2" coord-Y="4">-</td>
+                                <td coord-X="3" coord-Y="4">-</td>
+                                <td coord-X="4" coord-Y="4">-</td>
+                                <td coord-X="5" coord-Y="4">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9:30 - 10:00</th>
+                                <td coord-X="0" coord-Y="5">-</td>
+                                <td coord-X="1" coord-Y="5">-</td>
+                                <td coord-X="2" coord-Y="5">-</td>
+                                <td coord-X="3" coord-Y="5">-</td>
+                                <td coord-X="4" coord-Y="5">-</td>
+                                <td coord-X="5" coord-Y="5">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">10:00 - 10:30</th>
+                                <td coord-X="0" coord-Y="6">-</td>
+                                <td coord-X="1" coord-Y="6">-</td>
+                                <td coord-X="2" coord-Y="6">-</td>
+                                <td coord-X="3" coord-Y="6">-</td>
+                                <td coord-X="4" coord-Y="6">-</td>
+                                <td coord-X="5" coord-Y="6">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">10:30 - 11:00</th>
+                                <td coord-X="0" coord-Y="7">-</td>
+                                <td coord-X="1" coord-Y="7">-</td>
+                                <td coord-X="2" coord-Y="7">-</td>
+                                <td coord-X="3" coord-Y="7">-</td>
+                                <td coord-X="4" coord-Y="7">-</td>
+                                <td coord-X="5" coord-Y="7">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">11:00 - 11:30</th>
+                                <td coord-X="0" coord-Y="8">-</td>
+                                <td coord-X="1" coord-Y="8">-</td>
+                                <td coord-X="2" coord-Y="8">-</td>
+                                <td coord-X="3" coord-Y="8">-</td>
+                                <td coord-X="4" coord-Y="8">-</td>
+                                <td coord-X="5" coord-Y="8">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">11:30 - 12:00</th>
+                                <td coord-X="0" coord-Y="9">-</td>
+                                <td coord-X="1" coord-Y="9">-</td>
+                                <td coord-X="2" coord-Y="9">-</td>
+                                <td coord-X="3" coord-Y="9">-</td>
+                                <td coord-X="4" coord-Y="9">-</td>
+                                <td coord-X="5" coord-Y="9">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">12:00 - 12:30</th>
+                                <td coord-X="0" coord-Y="10">-</td>
+                                <td coord-X="1" coord-Y="10">-</td>
+                                <td coord-X="2" coord-Y="10">-</td>
+                                <td coord-X="3" coord-Y="10">-</td>
+                                <td coord-X="4" coord-Y="10">-</td>
+                                <td coord-X="5" coord-Y="10">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">12:30 - 13:00</th>
+                                <td coord-X="0" coord-Y="11">-</td>
+                                <td coord-X="1" coord-Y="11">-</td>
+                                <td coord-X="2" coord-Y="11">-</td>
+                                <td coord-X="3" coord-Y="11">-</td>
+                                <td coord-X="4" coord-Y="11">-</td>
+                                <td coord-X="5" coord-Y="11">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">13:00 - 13:30</th>
+                                <td coord-X="0" coord-Y="12">-</td>
+                                <td coord-X="1" coord-Y="12">-</td>
+                                <td coord-X="2" coord-Y="12">-</td>
+                                <td coord-X="3" coord-Y="12">-</td>
+                                <td coord-X="4" coord-Y="12">-</td>
+                                <td coord-X="5" coord-Y="12">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">13:30 - 14:00</th>
+                                <td coord-X="0" coord-Y="13">-</td>
+                                <td coord-X="1" coord-Y="13">-</td>
+                                <td coord-X="2" coord-Y="13">-</td>
+                                <td coord-X="3" coord-Y="13">-</td>
+                                <td coord-X="4" coord-Y="13">-</td>
+                                <td coord-X="5" coord-Y="13">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">14:00 - 14:30</th>
+                                <td coord-X="0" coord-Y="14">-</td>
+                                <td coord-X="1" coord-Y="14">-</td>
+                                <td coord-X="2" coord-Y="14">-</td>
+                                <td coord-X="3" coord-Y="14">-</td>
+                                <td coord-X="4" coord-Y="14">-</td>
+                                <td coord-X="5" coord-Y="14">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">14:30 - 15:00</th>
+                                <td coord-X="0" coord-Y="15">-</td>
+                                <td coord-X="1" coord-Y="15">-</td>
+                                <td coord-X="2" coord-Y="15">-</td>
+                                <td coord-X="3" coord-Y="15">-</td>
+                                <td coord-X="4" coord-Y="15">-</td>
+                                <td coord-X="5" coord-Y="15">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">15:00 - 15:30</th>
+                                <td coord-X="0" coord-Y="16">-</td>
+                                <td coord-X="1" coord-Y="16">-</td>
+                                <td coord-X="2" coord-Y="16">-</td>
+                                <td coord-X="3" coord-Y="16">-</td>
+                                <td coord-X="4" coord-Y="16">-</td>
+                                <td coord-X="5" coord-Y="16">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">15:30 - 16:00</th>
+                                <td coord-X="0" coord-Y="17">-</td>
+                                <td coord-X="1" coord-Y="17">-</td>
+                                <td coord-X="2" coord-Y="17">-</td>
+                                <td coord-X="3" coord-Y="17">-</td>
+                                <td coord-X="4" coord-Y="17">-</td>
+                                <td coord-X="5" coord-Y="17">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">16:00 - 16:30</th>
+                                <td coord-X="0" coord-Y="18">-</td>
+                                <td coord-X="1" coord-Y="18">-</td>
+                                <td coord-X="2" coord-Y="18">-</td>
+                                <td coord-X="3" coord-Y="18">-</td>
+                                <td coord-X="4" coord-Y="18">-</td>
+                                <td coord-X="5" coord-Y="18">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">16:30 - 17:00</th>
+                                <td coord-X="0" coord-Y="19">-</td>
+                                <td coord-X="1" coord-Y="19">-</td>
+                                <td coord-X="2" coord-Y="19">-</td>
+                                <td coord-X="3" coord-Y="19">-</td>
+                                <td coord-X="4" coord-Y="19">-</td>
+                                <td coord-X="5" coord-Y="19">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <input type="hidden" id="horarioDisp" name="horariosd" value="">
+                <input type="hidden" id="Docente" name="docente" value="{{iddocente}}">
+
+                <div class="card-footer text-muted">
+                    <button type="submit" class="btn grenncolor text-white" onclick="return gsHorarios();">Guardar Modificaciones</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <br>
+    <br>
+
+</div>
+
+{% endblock contenido %}
+
+{% block script %}
+{{ arreglo|json_script:"horario" }}
+<script src="{% static 'js/Dcs/mostdocente.js' %}" ></script>
+<script src="{% static 'js/Dcs/registrodocente.js' %}" ></script>
+{% endblock script %}

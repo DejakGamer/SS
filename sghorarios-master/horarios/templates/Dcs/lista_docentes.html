@@ -1,0 +1,104 @@
+{% extends 'basic.html' %}
+{% load static %}
+
+{% block titulosp %}Lista de Docentes{% endblock titulosp %}
+
+{% block head %}
+    <link href="{% static 'css/Dcs/listaddocentes.css' %}" rel="stylesheet">
+{% endblock head%}
+
+{% block contenido %}
+<div class="container-xl">
+<!-- Content here -->
+    
+    <br>
+    <div class="row justify-content-center align-content-center">
+        <div class="card" style="padding: 0px;">
+            <div class="card-header banner">
+                <div class="row">
+                    <div class="col-sm-3 align-self-start">
+                        <h4 >Lista de Docentes</h4>
+                    </div>
+                    <div class="col-sm-6 align-self-center text-center align-content-center">
+                        <h5 >Fecha Limite:</h5>
+                        <span class="align-content-center text-center" id="fecha_limite">
+                            <h6 onclick="guardar_fecha_limite('{{fecha_limite}}')">{{fecha_limite}}</h6>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body input-group" style="margin-bottom: 0px important!">
+                <span class="input-group-text" id="basic-addon1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="25" fill="currentColor"
+                        class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                </span>
+                <input id="query" type="text" class="form-control" placeholder="Busqueda" aria-label="Busqueda"
+                    onkeyup="getDsc(this.value)">
+                    
+                <div class="row input-group mb-3" style="padding: 1rem;">
+                    <div class="col-sm-2 text-center">
+                        <a type="button" class="btn grenncolor text-white" href="{% url 'registro_docente' %}">Añadir Docente</a>
+                    </div>
+                    <div class="col-sm-7 align-content-center text-center">
+                    </div>
+                    <div class="col-sm-3 text-center">
+                        <a type="button" class="btn btn-danger" onclick="elimnarHD()">Eliminar Horarios Disponibles</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">Grado Academico</th>
+                            <th scope="col">Nombre(s)</th>
+                            <th scope="col">Apellido(s)</th>
+                            <th scope="col">Correo</th>
+                            <th scope="col">Tipo Docente</th>
+                            <th scope="col">Lleno</th>
+                            <th scope="col"> </th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_contenido">
+                        <tr><th colspan="6" style="text-align: center;"> SIN DATOS </th></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}
+
+
+{% block script %}
+<script src="{% static 'js/Dcs/listadocentes.js' %}"></script>
+<script>
+function guardar_fecha_limite(anterior){
+    /**
+     * Funcion que agrega el formulario para poder guardar la nueva fecha limite para agregar que los docentes, coordinadores
+     * y administrativos puedan modificar los horarios disponibles de los docentes. Se obtiene la fecha actual (AAAA-MM-DD)
+     * @param anterior: fecha anterior (AAAA-MM-DD)
+     */
+    limite = $("#fecha_limite");
+    limite.empty()
+    let st = ""
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    let yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+    st += `
+        <form action="{% url 'nueva_fecha_limite' %}" method='POST' class="needs-validation" novalidate>
+            {% csrf_token %}
+            <input class="form-control form-control-sm" type="date" value="${anterior}" min="${today}"  placeholder="" name="limite" style="max-width: 30rem;margin: auto; width: 50%;" required>
+            <button type="submit" class="btn goldcolor text-white btn-sm">Guardar</button>
+        </form>
+    `;
+    limite.append(st)
+}
+</script>
+{% endblock script%}

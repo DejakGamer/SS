@@ -1,0 +1,92 @@
+@import url("../fonts/Metropolis/style.css");
+
+*{
+    font: 15px ‘Metropolis’, Arial, Helvetica, sans-serif;
+}
+
+/*
+* Componentes de la barra de navegacion
+*/
+.site-header {
+    background-color: #3c3b3b;
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+}
+.site-header a {
+    color: #fff;
+    transition: color .15s ease-in-out;
+    text-decoration:none;
+    border-bottom-color: #3c3b3b;
+    border-bottom-style: solid;
+}
+.site-header a:hover {
+    color: #fff;
+    border-bottom-color: white;
+}
+
+/*
+* Elementos esteticos univercitarios extra
+*/
+.banner {
+    background-image: url(https://www.uaemex.mx/images/2021/pleca-arriba.jpg);
+    background-size: 100% 100%;
+    color: #fff;
+}
+
+.grenncolor {
+    background-color: #679370;
+    border-color: #679370;
+}
+.grenncolor:hover{
+    background-color: #A49E60;
+    border-color: #A49E60;
+}
+
+.greencolor{
+    background-color: #679370;
+    border-color: #679370;
+}
+
+.greencolor:hover{
+    background-color: #477551;
+    border-color: #477551;
+}
+
+.goldcolor{
+    background-color: #A49E60;
+    border-color: #A49E60;
+}
+
+.goldcolor:hover{
+    background-color: #9c8412;
+    border-color: #9c8412;
+}
+
+/*Estilos del formulario*/
+span.input-group-text.material-icons {
+    background: #679370;
+    color: #e6e6e6;
+}
+
+tr.vic {
+    border-bottom-color: #679370;
+    border-bottom-width: medium !important;
+}
+
+.vicdos{
+	background-color: #A49E60 !important;
+}
+
+
+/*
+* Extra utilities
+*/
+
+.flex-equal > * {
+    flex: 1;
+}
+@media (min-width: 768px) {
+    .flex-md-equal > * {
+      flex: 1;
+    }
+}

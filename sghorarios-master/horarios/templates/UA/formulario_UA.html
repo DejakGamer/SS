@@ -1,0 +1,74 @@
+{% extends 'basic.html' %}
+{% load static %}
+
+
+        {%block titulosp%}
+            {{titulo}}
+        {%endblock titulosp%}
+        {% block head %}
+        <link href="{% static 'css/UA/registro.css' %}" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        {% endblock head%}
+
+{% block contenido %}
+<div class="content">
+    <div class="card">
+        <form action="{% url destino %}" method='POST' class="needs-validation" novalidate>
+            <input type="hidden" name="id" value="{{ua.id}}">
+            {% csrf_token %}
+            <div class="card-header banner">
+                <h5>{{titulo}}</h5>
+            </div>
+            <div class="card-body">
+                </br>
+                <div class="input-group mb-3">
+                    <span class="input-group-text material-icons" id="">title</span>
+                    <input type="text" class="form-control" placeholder="Titulo de la Unidad de aprendizaje" 
+                        name="titulo" pattern="[A-Za-zÀ-ÿ0-9()& \-,\s]{3,100}" value="{{ua.titulo}}" required>
+                    <div class="invalid-feedback">
+                        Por lo menos 3 caracteres de longitud. :D
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text material-icons">calendar_today</span>
+                    <input type="number" class="form-control" placeholder="Semestre" name="semestre" min="1" max="11" value="{{ua.semestre}}" required>
+                    <div class="invalid-feedback">
+                        Rellena la información pedida.
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text material-icons" id="">schedule</span>
+                    <input type="number" class="form-control" placeholder="Horas" name="horas" min="0" value="{{ua.horas}}" required>
+                    <div class="invalid-feedback">
+                        Rellena la información pedida.
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text material-icons">fact_check</span>
+                    <select  id="licenciatura_s" class="form-select" name="licenciatura" required>
+                        <option value="" disabled selected>Seleccione una licenciatura</option>
+                        {% for i in licenciaturas %}
+                            <option value="{{i.id}}">{{i.siglas}} - {{i.nombre}} - {{i.version}}</option>
+                        {% empty %}
+                            <option value="">Sin datos</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">
+                        Rellena la información pedida.
+                    </div>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style="margin-bottom: 10%;">
+                    <button class="btn  grenncolor text-white" type="submit">Guardar</button>
+                </div>
+            </div>
+        </form>    
+    </div>
+</div>
+{% endblock contenido %}
+
+
+{% block script %}
+    {{ ua.licenciatura.id|json_script:"licenciatura" }}
+<script src="{% static 'js/UA/validaciones.js' %}" ></script>
+<script src="{% static 'js/UA/formulario_UA.js' %}" ></script>
+{% endblock script%}

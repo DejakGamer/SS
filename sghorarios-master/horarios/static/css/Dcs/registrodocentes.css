@@ -1,0 +1,19 @@
+
+/*Boton Flotante*/
+.flotante {
+	width: 80px;
+	height: 40px;
+
+	position: fixed;
+	bottom: 10px;
+	left: 30px;
+}
+
+.flotan {
+	width: 80px;
+	height: 40px;
+
+	position: fixed;
+	bottom: 10px;
+	left: 130px;
+}

@@ -1,0 +1,65 @@
+{% extends 'basic.html' %}
+{% load static %}
+
+{% block titulosp %}Lista de Coordinadores{% endblock titulosp %}
+
+{% block contenido %}
+<br>
+<br>
+<div class="container">
+    <div class="row justify-content-center align-content-center">
+        <div class="card" style="padding: 0px;">
+            <div class="card-header banner">
+                <h4>Lista de Coordinadores</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped text-center">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre(s)</th>
+                            <th scope="col">Apellido(s)</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cd in coordinador %}
+                        <tr>
+                            <th scope="row"> {{cd.id}} </th>
+                            <td> {{cd.user.first_name}} </td>
+                            <td> {{cd.user.last_name}} </td>
+                            <td> <button class="btn grenncolor text-white" onclick="location.href ='../modificacion_docente?id={{cd.user.docente.id}}'">Modificación de Docente</button> </td>
+                        </tr>
+                            {% if cd.licenciatura_set.exists %}
+                            <tr>
+                                <td colspan="4">
+                                    <table class="table mb-0 text-center">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Carrera</th>
+                                                <th scope="col">Siglas</th>
+                                                <th scope="col">Versión</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for lic in cd.licenciatura_set.all  %}
+                                            <tr>
+                                                <td>{{lic.nombre}}</td>
+                                                <td>{{lic.siglas}}</td>
+                                                <td>{{lic.version}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock contenido %}

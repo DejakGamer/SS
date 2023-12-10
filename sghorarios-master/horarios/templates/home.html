@@ -1,0 +1,40 @@
+{% extends 'basic.html' %}
+{% load static %}
+
+        {% block titulosp %}Bienvenido{% endblock titulosp %}
+        {% block head %}
+            <link href="{% static 'css/homeonly.css' %}" rel="stylesheet">
+        {% endblock head%}
+
+{% block contenido %}
+<div class="container" style="margin-top: 15%;">
+    <div class="row justify-content-md-center">
+        <div class="col-sm-12">
+            <div class="p-4 p-md-5 mb-4 text-white rounded">
+                <div class="col-md-12 px-0">
+                    <h1 class="display-5">Sistema para la Gestión de Horarios</h1>
+                    <hr>
+                    {% if user.is_authenticated %}
+                    <p class="lead my-2 ">Nombre: {{user.first_name}}</p>
+                    <p class="lead my-2 ">Apellidos: {{user.last_name}}</p>
+                    <p class="lead my-2 ">Correo: {{user.email}}</p>
+                    <p class="lead my-2 ">Roles: {% for grupo in user.groups.all %}{{grupo.name}} {% endfor %}</p>
+                    <p class="lead my-2"> 
+                        {% for grupo in user.groups.all %}
+                            {% if grupo.name == "Docente" %} Para modificar sus datos personales, ingrese <a class="lead my-2 text-white" href="../modificacion_docente?id={{user.docente.id}}">aquí</a>. </p> 
+                                {% if limite == True%}<p class="lead my-2 ">Para modificar su horario dispoble, ingrese <a class="lead my-2 text-white" href="../modificacion_horario_docente?id={{user.docente.id}}"> aquí.</p>{% endif %} 
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                    <p class="lead my-2 ">Si aún no estas registrado docente, por favor ingresa a el siguiete <a class="lead my-2 text-white" href="{% url 'registro_docente' %}">link</a></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}
+
+
+{% block script %}
+{% endblock script%}
